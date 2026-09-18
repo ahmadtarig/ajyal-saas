@@ -195,6 +195,89 @@ Section A
 
 ---
 
+
+---
+
+## 7A. Tenant-Customizable Roles
+
+المدرسة / الـTenant يجب أن تستطيع تعديل نموذج الأدوار بما يناسب هيكلها التشغيلي، بدل أن تكون ملزمة فقط بالأدوار القياسية التي تأتي مع المنصة.
+
+يتم التفريق بين:
+
+- **System Role Templates**: أدوار قياسية جاهزة من Ajyal لتسريع الإعداد.
+- **Tenant Custom Roles**: أدوار تنشئها أو تعدلها المدرسة داخل نطاقها.
+- **Protected Platform Roles**: أدوار خاصة بإدارة منصة SaaS نفسها ولا يمكن للمدرسة تعديلها.
+
+أمثلة على System Role Templates:
+
+- Teacher
+- Principal
+- Academic Supervisor
+- Admissions Officer
+- Finance Officer
+- HR Officer
+- Nurse
+- Transport Officer
+
+يمكن للمدرسة:
+
+- Clone role template.
+- Rename role for its own terminology.
+- Add or remove allowed permissions within the tenant policy boundary.
+- Adjust default scope rules.
+- Create a completely new school role.
+- Disable unused school roles.
+
+مثال:
+
+```text
+Ajyal Template:
+Academic Supervisor
+
+School Custom Role:
+Head of Secondary Academics
+
+Permissions:
+- academic.view_stage
+- grade.review
+- grade.approve
+- timetable.view
+- attendance.review
+
+Scope:
+Secondary Stage
+```
+
+### Guardrails
+
+تخصيص الأدوار لا يعني أن المدرسة تستطيع تجاوز حدود أمان المنصة.
+
+لا يجوز لـTenant Custom Role أن:
+
+- يمنح صلاحيات SaaS Platform Administration.
+- يتجاوز Tenant isolation.
+- يمنح الوصول إلى Tenant آخر.
+- يتجاوز Protected Security Controls.
+- يلغي Audit requirements للعمليات الحساسة.
+- يتجاوز Separation of Duties أو Explicit Deny عندما تكون مفروضة كسياسة حماية أساسية.
+
+المبدأ:
+
+```text
+Platform Security Boundary
+        ↓
+Tenant Permission Catalogue
+        ↓
+School Role Templates / Custom Roles
+        ↓
+User Role Assignments
+        ↓
+Scope
+```
+
+وبذلك تكون المدرسة مرنة في تصميم Roles الخاصة بها، بينما تظل حدود الأمان الأساسية تحت سيطرة المنصة.
+
+
 ## 8. Parent Access Model
 
 لا يحصل ولي الأمر على صلاحيات عامة على الطلاب.
